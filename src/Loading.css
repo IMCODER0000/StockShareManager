@@ -1,0 +1,53 @@
+/* 전체 로딩창 스타일 */
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}
+
+/* 스피너 애니메이션 */
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+/* 자산 분배 중... 텍스트 애니메이션 */
+.loading-text {
+    font-size: 1.2rem;
+    animation: blink 1.5s step-start infinite;
+}
+
+/* 스피너 회전 애니메이션 */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 텍스트 깜박임 애니메이션 */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

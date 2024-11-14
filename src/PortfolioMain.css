@@ -1,0 +1,292 @@
+.portfolio-main-box{
+    color: white;
+    background-color: #474646;
+    width: 100%;
+    height: 100%;
+}
+.portfolio-main-box2{
+    display: flex;
+    color: white;
+    background-color: #474646;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+}
+
+.stock-list {
+    margin-left: 120px;
+    border-radius: 10px;
+    padding: 15px;
+    width: 500px;
+    text-align: left;
+    margin-bottom: 100px;
+   
+}
+
+.stock-item {
+    align-items: center;
+    display: flex;
+
+    padding: 22px 0;
+
+}
+
+.name{
+    width: 100px;
+}
+
+.stock-item:last-child {
+    border-bottom: none;
+}
+
+.rank {
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 25px;
+}
+
+.change {
+    width: 100px;
+    text-align: right;
+    font-size: 20px;
+}
+
+.price {
+    text-align: right;
+    font-size: 14px;
+    color: rgb(185, 184, 184);
+}
+
+.stock-image {
+    width: 50px; 
+    height: auto; 
+    margin-right: 10px;
+}
+.stock-image2 {
+    width: 50px; 
+    height: 50px; 
+    margin-right: 10px;
+}
+
+.price-change {
+    display: grid; 
+    margin-top: 5px; 
+    position: relative;
+    left: 190px;
+
+}
+
+
+.stock-detail{
+    width: 600px;
+    height: 800px;
+    border: white 2px solid;
+    margin-bottom: 100px;
+}
+
+.stock-name-box{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.stock-name{
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.stock-enName{
+    color: rgb(129, 129, 129);
+    margin-left: 6px;
+    font-weight: 700;
+}
+
+.stock-pice{
+    display: flex;
+    margin-left: 20px;
+    align-items: center;
+}
+
+
+.search-input {
+    width: 400px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #333;
+    border: 2px solid #555;
+    border-radius: 30px 0 0 30px; 
+    outline: none;
+    transition: all 0.3s ease;
+
+}
+
+.search-input::placeholder {
+    color: #bbb;
+}
+
+.search-input:focus {
+    border-color: white;
+    background-color: #444;
+}
+
+.search-input2 {
+    margin-right: 80px;
+    width: 400px;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #333;
+    border: 2px solid #555;
+    outline: none;
+    transition: all 0.3s ease;
+
+}
+
+.search-input2::placeholder {
+    color: #bbb;
+}
+
+.search-input2:focus {
+    border-color: white;
+    background-color: #444;
+}
+
+.search-button {
+    padding: 10px 15px;
+    background-color: #555;
+    color: #fff;
+    font-size: 16px;
+    border: 2px solid #555;
+    border-left: none; 
+    border-radius: 0 30px 30px 0; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #666;
+    border-color: white;
+}
+
+.search-button:focus {
+    outline: none;
+}
+
+.Main-Search{
+    display: flex;
+    margin-bottom: 10px;
+    margin-left: 100px;
+}
+.Main-Search2{
+    display: flex;
+    margin-bottom: 100px;
+    margin-left: 100px;
+}
+.nom{
+    height: 50px;
+}
+
+.p-selected{
+    display: flex;
+    border: 3px solid rgb(118, 118, 118);
+    width: 400px;
+    height: 400px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+
+}
+
+.p-total-content{
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    justify-content: center;
+
+}
+.p-left{
+    display: flex;
+    flex-direction: column; 
+}
+
+.p-selected-content {
+    display: flex;
+    justify-content: space-between; /* 좌측은 텍스트, 우측은 X */
+    align-items: center; /* 세로 중앙 정렬 */
+    width: 200px;
+    height: 50px;
+    border: 2px solid white;
+    line-height: 50px;
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    margin-bottom: 20px;
+    border-radius: 20px;
+    padding: 0 10px; /* 좌우 여백 */
+    cursor: pointer; /* X에 마우스 포인터 표시 */
+}
+
+.submit-box{
+    position: absolute;
+    bottom: 100px;
+    left: 930px;
+}
+.submit-box2{
+    position: absolute;
+    bottom: 100px;
+    left: 1200px;
+}
+.p-right{
+    display: flex;
+    flex-direction: column; 
+}
+
+.submit{
+    width: 200px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 10px;
+    border: 3px solid rgb(218, 218, 218);
+    color: rgb(238, 236, 236);
+    font-weight: 900;
+    margin-right: 15px;
+}
+
+.submit:hover{
+
+    background-color:  rgb(218, 218, 218);
+    color: black;
+
+}
+.submit2{
+    width: 200px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 10px;
+    border: 3px solid rgb(218, 218, 218);
+    color: rgb(238, 236, 236);
+    font-weight: 900;
+    margin-right: 15px;
+}
+
+.submit2:hover{
+
+    background-color:  rgb(218, 218, 218);
+    color: black;
+
+}
+.submit2.selected {
+    background-color: rgb(218, 218, 218);
+    color: black;
+  }
+
+.myF{
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 30px;
+}
