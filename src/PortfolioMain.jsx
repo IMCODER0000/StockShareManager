@@ -3,6 +3,7 @@ import "./Quiz/css/Quiz.css";
 import Navigate from "./Navigate";
 import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import "./Content.css"
 import "./PortfolioMain.css"
 
@@ -22,19 +23,28 @@ function PortfolioMain({ setPageNum, myCost, riskLevel,setPlusData,plusData,setI
     navigate(`/ai`);
   };
 
+  useEffect(() => {
+    const fetchStockData = async () => {
+      const response = await axios.get('/api/stocks');
+      setTop10(response.data);
+    };
+    fetchStockData();
+    console.log("top10 : ", top10);
+  }, []);
+
 
   useEffect(() => {
 
 
         
-    setTop10([
-        { rank: 1, name: '엔비디아', change: '+1.1%', price: '195,096원', color: 'red', image: '/E.png' },
-        { rank: 2, name: 'SK하이닉스', change: '+1.1%', price: '198,200원', color: 'red', image: '/SK.png' },
-        { rank: 3, name: '삼성전자', change: '-4.2%', price: '56,600원', color: 'blue', image: '/SA.png' },
-        { rank: 4, name: 'NAVER', change: '-0.2%', price: '172,100원', color: 'gray', image: '/N.png' },
-        { rank: 5, name: '카카오', change: '-0.6%', price: '37,450원', color: 'gray', image: '/K.png' },
-        { rank: 6, name: 'CJ씨푸드', change: '-2.0%', price: '3,090원', color: 'blue', image: '/C.png' },
-    ]);
+    // setTop10([
+    //     { rank: 1, name: '엔비디아', change: '+1.1%', price: '195,096원', color: 'red', image: '/E.png' },
+    //     { rank: 2, name: 'SK하이닉스', change: '+1.1%', price: '198,200원', color: 'red', image: '/SK.png' },
+    //     { rank: 3, name: '삼성전자', change: '-4.2%', price: '56,600원', color: 'blue', image: '/SA.png' },
+    //     { rank: 4, name: 'NAVER', change: '-0.2%', price: '172,100원', color: 'gray', image: '/N.png' },
+    //     { rank: 5, name: '카카오', change: '-0.6%', price: '37,450원', color: 'gray', image: '/K.png' },
+    //     { rank: 6, name: 'CJ씨푸드', change: '-2.0%', price: '3,090원', color: 'blue', image: '/C.png' },
+    // ]);
 
 
     setAllData([
