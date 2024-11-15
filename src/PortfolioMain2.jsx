@@ -67,7 +67,7 @@ function PortfolioMain2({ setPageNum, setRiskLevel, riskLevel, setMyCost }) {
             className={`submit2 ${riskLevel === 3 ? 'selected' : ''}`} // 선택된 버튼 스타일 변경
             onClick={() => handleRiskSelection(3)}
           >
-            저 위험
+            저위험 저수익
           </button>
           <button
             className={`submit2 ${riskLevel === 5 ? 'selected' : ''}`} // 선택된 버튼 스타일 변경
@@ -79,7 +79,7 @@ function PortfolioMain2({ setPageNum, setRiskLevel, riskLevel, setMyCost }) {
             className={`submit2 ${riskLevel === 7 ? 'selected' : ''}`} // 선택된 버튼 스타일 변경
             onClick={() => handleRiskSelection(7)}
           >
-            고 위험
+            고위험 고수익
           </button>
         </div>
 

@@ -6,12 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./Content.css"
 import "./PortfolioMain.css"
+import Loading from "./Loading";
 
 function PortfolioMain({ setPageNum, myCost, riskLevel,setPlusData,plusData,setIsFinish,setIm, im }) {
     const [searchText, setSearchText] = useState('');
     const [searchData, setSearchData] = useState([]);
     const [top10, setTop10] = useState([]);
     const [allData, setAllData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -39,6 +41,7 @@ function PortfolioMain({ setPageNum, myCost, riskLevel,setPlusData,plusData,setI
 
 
 const handleSubmit = async () => {
+  setIsLoading(true);
   const inputData = {
     totalInvestment: myCost,
     risk: riskLevel,
@@ -53,28 +56,29 @@ const handleSubmit = async () => {
     // POST 요청 보내기
     const response = await axios.post("http://localhost:4000/api/runPython", inputData, {
       headers: {
-        'Content-Type': 'application/json',  // 명시적으로 Content-Type 설정
+        'Content-Type': 'application/json',
       },
     });
 
     const data = response.data;
-
     console.log("data123 : ", data);
-
-   
-
-    // 예: 상태 설정
+    
     setIm({
       data,
     });
 
-    console.log("setIm : ", im);
+    setIsLoading(false);
+    setPageNum(prev => prev + 1);
+    setIsFinish(true);
 
-    console.log("Response : ", response.data);
   } catch (err) {
     console.error("Error : ", err);
+    setIsLoading(false);
+    alert("포트폴리오 생성 중 오류가 발생했습니다.");
   }
 };
+
+
 
 
 
@@ -129,13 +133,16 @@ const Minus = (stock) => {
     console.log("@@@@@@ : ", plusData);
 }
   
-const Next = () =>{
-    setPageNum(prev => prev + 1);
-    setIsFinish(true);
+const Next = () => {
+    if (plusData.length !== 3) {
+        alert("주식을 3개 선택해주세요.");
+        return;
+    }
+    handleSubmit();
     console.log("자산 : ", myCost);
     console.log("리스크 : ", riskLevel);
     console.log("주식들 : ", plusData);
-    handleSubmit();
+    console.log("@@@@@@@@ : ",  im);
 
 }
 
@@ -147,75 +154,76 @@ const Prev = () =>{
   return (
     <div className="content-container">
         <div className="portfolio-main-box">
-            <div className="nom"></div>
-            <div className="p-total-content">
-            <div className="p-left">
-                <div className="Main-Search">
-                        <input
-                            type="text"
-                            className="search-input"
-                            value={searchText}
-                            onChange={handleChange}
-                            placeholder="검색어를 입력하세요..."
-                        />
-                        <button className="search-button" onClick={handleSearch}>
-                            <FaSearch />
-                        </button>
-                    </div>
-                    <div className="stock-list">
-                        {searchData.length === 0 ? (
-                            top10.map(stock => (
-                            <div key={stock.rank} className="stock-item" onClick={() => plus(stock) }>
-                                <span className="rank">{stock.rank}</span>
-                                <span className="name">{stock.name}</span>
-                                <span className="price-change">
-                                <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
-                                <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
-                                <span className="change" style={{ color: stock.color }}>{stock.change}</span>
-                                </span>
+            {isLoading ? (
+                <div className="loading-container">
+                <div className="loading-spinner"></div>
+                <p>효율적인 자산 분배중 입니다.</p>
+              </div>
+            ) : (
+                <>
+                    <div className="nom"></div>
+                    <div className="p-total-content">
+                        <div className="p-left">
+                            <div className="Main-Search">
+                                <input
+                                    type="text"
+                                    className="search-input"
+                                    value={searchText}
+                                    onChange={handleChange}
+                                    placeholder="검색어를 입력하세요..."
+                                />
+                                <button className="search-button" onClick={handleSearch}>
+                                    <FaSearch />
+                                </button>
                             </div>
-                            ))
-                        ) : (
-                            searchData.map(stock => (
-                            <div key={stock.rank} className="stock-item" onClick={() => plus(stock) }>
-                                <span className="rank">{stock.rank}</span>
-                                <span className="name">{stock.name}</span>
-                                <span className="price-change">
-                                <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
-                                <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
-                                <span className="change" style={{ color: stock.color }}>{stock.change}</span>
-                                </span>
+                            <div className="stock-list">
+                                {searchData.length === 0 ? (
+                                    top10.map(stock => (
+                                        <div key={stock.rank} className="stock-item" onClick={() => plus(stock)}>
+                                            <span className="rank">{stock.rank}</span>
+                                            <span className="name">{stock.name}</span>
+                                            <span className="price-change">
+                                                <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
+                                                <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
+                                                <span className="change" style={{ color: stock.color }}>{stock.change}</span>
+                                            </span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    searchData.map(stock => (
+                                        <div key={stock.rank} className="stock-item" onClick={() => plus(stock)}>
+                                            <span className="rank">{stock.rank}</span>
+                                            <span className="name">{stock.name}</span>
+                                            <span className="price-change">
+                                                <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
+                                                <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
+                                                <span className="change" style={{ color: stock.color }}>{stock.change}</span>
+                                            </span>
+                                        </div>
+                                    ))
+                                )}
                             </div>
-                            ))
-                        )}
                         </div>
-
-                </div>
-                 <div className="p-right">
-                    <div className="p-selected">
-                        {plusData.map(stock => (
-                            <div className="p-selected-content" onClick={() => Minus(stock)}>
-                                {stock.name}
-                                <span> X </span>
+                        <div className="p-right">
+                            <div className="p-selected">
+                                {plusData.map(stock => (
+                                    <div key={stock.name} className="p-selected-content" onClick={() => Minus(stock)}>
+                                        {stock.name}
+                                        <span> X </span>
+                                    </div>
+                                ))}
                             </div>
-
-                        ))}
-                    
+                            <div className="submit-box">
+                                <button className="submit" onClick={Prev}> 이전 </button>
+                                <button className="submit" onClick={Next}> 다음 </button>
+                            </div>
+                        </div>
                     </div>
-                    <div className="submit-box">
-                        <button className="submit" onClick={Prev}> 이전 </button>
-                        <button className="submit" onClick={Next}> 다음 </button>
-                    </div>
-                    
-                </div>
-                    
-                </div>
-            
-
+                </>
+            )}
         </div>
     </div>
   );
 }
 
 export default PortfolioMain;
-

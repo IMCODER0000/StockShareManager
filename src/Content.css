@@ -92,7 +92,7 @@
   }
 
   .half1-title{
-    margin-top: 20px;
+    margin-top: 40px;
     font-size: 25px;
     margin-left: 30px;
     font-weight: 900;
@@ -105,9 +105,9 @@
     font-weight: 900;
   }
   .half1-start{
-    margin-top: 150px;
+    margin-top: 200px;
     font-size: 18px;
-    margin-left: 250px;
+    margin-left: 300px;
     font-weight: 900;
   }
 
@@ -124,7 +124,7 @@
   }
   
   .half2-title{
-    margin-top: 20px;
+    margin-top: 40px;
     font-size: 25px;
     margin-left: 30px;
     font-weight: 900;
@@ -139,9 +139,9 @@
     font-weight: 900;
   }
   .half2-start{
-    margin-top: 150px;
+    margin-top: 200px;
     font-size: 18px;
-    margin-left: 250px;
+    margin-left: 300px;
     color: white;
     font-weight: 900;
   }
@@ -211,7 +211,7 @@
 
 .left-texts1{
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 1%;
   transform: translateX(0);
   color: white;

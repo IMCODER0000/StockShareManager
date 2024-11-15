@@ -28,11 +28,10 @@ ChartJS.register(
 
 
 
-const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
+const PortfolioChart = ({ myCost, riskLevel, plusData, im }) => {
   const [selectedStock, setSelectedStock] = useState(null);
   const [stockGData, setStockGData] = useState([]);
 
-  const generateRandomPercentage = () => Math.floor(Math.random() * 100) + 1;
 
 
   useEffect(() => {
@@ -62,21 +61,49 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
       fetchData(plusData[i]);
 
     }
+
+
   
   }, [plusData]);
   
 
+const priceMatch = (stock) => {
+  console.log('im:', im);
+  console.log('stock:', stock);
+  console.log('im.data:', im.data);
+  const price = Object.entries(im.data).filter(([key, value]) => key === stock.name);
+  console.log('price after filter:', price);
+  const priceValue = price.length > 0 ? price[0][1] : null;
+  return priceValue;
+}
+
+const PercentageManch = (stock) => {
+  if (!im?.data?.total || !im?.data?.rf) return 0;
+  const sum = im.data.total - im.data.rf;
+  if (sum === 0) return 0;
+  const stockPrice = priceMatch(stock);
+  if (!stockPrice) return 0;
+  const per = (stockPrice / sum) * 100;
+  return per;
+}
 
 
 
 
   const dataWithRandomPercentages = useMemo(() => {
+
+
+
     return plusData.map(stock => ({
       ...stock,
-      price : generateRandomPercentage(),
-      percentage: generateRandomPercentage(),
+      price : priceMatch(stock),
+      percentage: PercentageManch(stock),
     }));
   }, [plusData]);
+
+  useEffect(() => {
+    console.log("dataWithRandomPercentages : ", dataWithRandomPercentages);
+  }, [dataWithRandomPercentages]);
 
   const dataForBarChart = {
     labels: dataWithRandomPercentages.map(stock => stock.name),
@@ -91,11 +118,29 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
     ],
   };
 
+  const rfPercentage = () => {
+    const per = im.data.rf/myCost*100;
+    console.log("rfPercentage : ", per);
+    return per;
+  }
+  const nonRfPercentage = () => {
+    const per = (myCost-im.data.rf)/myCost*100;
+    console.log("nonRfPercentage : ", per);
+    return per;
+  }
+
+  useEffect(() => {
+    nonRfPercentage();
+    rfPercentage();
+  }, []);
+  
+
+
   const dataForPieChart = {
     labels: ['주식', '채권'],
     datasets: [
       {
-        data: [70, 30],
+        data: [nonRfPercentage(), rfPercentage()],
         backgroundColor: ['#4169E1', '#6495ED'],
         hoverBackgroundColor: ['#4169E1', '#6495ED'],
       },
@@ -153,17 +198,10 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
       legend: {
         display: false,
       },
-      title: {
-        display: true,
-        text: '선택된 주식 비율',
-        color: '#fff',
-        font: {
-          size: 16,
-          weight: 'bold',
-        },
-      },
+      
     },
   };
+  
 
   const generateStockPriceData = (stock) => {
     // stockGData에서 주식 데이터 가져오기
@@ -269,6 +307,11 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
     }
   };
 
+  const costMatch = (stock) => {
+    const formattedPrice = stock.price.toLocaleString(); 
+    return formattedPrice;
+  };
+
   return (
     <div className="chart-wrapper">
       <div className="chart-container">
@@ -299,11 +342,11 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
               <tbody>
                 <tr>
                   <td>주식</td>
-                  <td>70%</td>
+                  <td>{nonRfPercentage()}%</td>
                 </tr>
                 <tr>
                   <td>채권</td>
-                  <td>30%</td>
+                  <td>{rfPercentage()}%</td>
                 </tr>
               </tbody>
             </table>
@@ -323,7 +366,7 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
                 {dataWithRandomPercentages.map((stock, index) => (
                   <tr key={index}>
                     <td>{stock.name}</td>
-                    <td>{stock.price}%</td>
+                    <td>{costMatch(stock)}원</td>
                     <td>{stock.percentage}%</td>
                   </tr>
                 ))}
