@@ -25,7 +25,7 @@
 }
 
 .bar-chart {
-  margin-left: 150px;
+  margin-left: 100px;
   flex: 2;
   width: 88% !important;
   height: 88% !important;
@@ -39,7 +39,7 @@
 }
 
 .tables {
-  margin-left: 150px;
+  margin-left: 100px;
   flex: 1;
   color: #fff;
   font-size: 16px;

@@ -35,6 +35,7 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
   const dataWithRandomPercentages = useMemo(() => {
     return plusData.map(stock => ({
       ...stock,
+      price : generateRandomPercentage(),
       percentage: generateRandomPercentage(),
     }));
   }, [plusData]);
@@ -239,6 +240,7 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
               <thead>
                 <tr>
                   <th>주식명</th>
+                  <th>금액</th>
                   <th>비율</th>
                 </tr>
               </thead>
@@ -246,6 +248,7 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
                 {dataWithRandomPercentages.map((stock, index) => (
                   <tr key={index}>
                     <td>{stock.name}</td>
+                    <td>{stock.price}%</td>
                     <td>{stock.percentage}%</td>
                   </tr>
                 ))}

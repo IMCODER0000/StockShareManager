@@ -8,24 +8,14 @@ function Navigate() {
     const [selectedMenu, setSelectedMenu] = useState(null);
 
 
-    useEffect(() => {
-        if (location.pathname === '/quiz') {
-            setSelectedMenu('quiz');
-        } else if (location.pathname === '/To') {
-            setSelectedMenu('To');
-        } else if (location.pathname === '/test') {
-            setSelectedMenu('test');
-        } else if (location.pathname === '/M') {
-            setSelectedMenu('M');
-        }
-    }, [location.pathname]);  
+    
 
     const handleClickToLogin = () => {
         navigate('/login');
     };
 
     const handleClickToMain = () => {
-        navigate('/main');
+        navigate('/');
     };
 
     const handleMenuClick = (menu, path) => {

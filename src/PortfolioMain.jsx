@@ -23,37 +23,47 @@ function PortfolioMain({ setPageNum, myCost, riskLevel,setPlusData,plusData,setI
   };
 
 
+
+
   useEffect(() => {
 
+    fetchTop10Stocks()
+    console.log("올  : " ,allData);
+    console.log("올  : " , top10);
 
-        
-    setTop10([
-        { rank: 1, name: '엔비디아', change: '+1.1%', price: '195,096원', color: 'red', image: '/E.png' },
-        { rank: 2, name: 'SK하이닉스', change: '+1.1%', price: '198,200원', color: 'red', image: '/SK.png' },
-        { rank: 3, name: '삼성전자', change: '-4.2%', price: '56,600원', color: 'blue', image: '/SA.png' },
-        { rank: 4, name: 'NAVER', change: '-0.2%', price: '172,100원', color: 'gray', image: '/N.png' },
-        { rank: 5, name: '카카오', change: '-0.6%', price: '37,450원', color: 'gray', image: '/K.png' },
-        { rank: 6, name: 'CJ씨푸드', change: '-2.0%', price: '3,090원', color: 'blue', image: '/C.png' },
-    ]);
+   
 
-
-    setAllData([
-        { rank: 1, name: '엔비디아', change: '+1.1%', price: '195,096원', color: 'red', image: '/E.png' },
-        { rank: 2, name: 'SK하이닉스', change: '+1.1%', price: '198,200원', color: 'red', image: '/SK.png' },
-        { rank: 3, name: '삼성전자', change: '-4.2%', price: '56,600원', color: 'blue', image: '/SA.png' },
-        { rank: 4, name: 'NAVER', change: '-0.2%', price: '172,100원', color: 'gray', image: '/N.png' },
-        { rank: 5, name: '카카오', change: '-0.6%', price: '37,450원', color: 'gray', image: '/K.png' },
-        { rank: 6, name: 'CJ씨푸드', change: '-2.0%', price: '3,090원', color: 'blue', image: '/C.png' },
-    ]);
-
+  
 
 
 
 
 }, []);
+
+const fetchTop10Stocks = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/stocks");
+      const data = await response.json();
+
+      if (data) {
+       console.log("Data : ", data);
+        
+
+        setAllData(data);
+        const top = data.filter(item => item.rank >= 1 && item.rank <= 5);
+        setTop10(top);  
+        
+      }
+    } catch (error) {
+      console.error("데이터를 불러오는데 실패했습니다:", error);
+    }
+  };
+
+
 const handleChange = (event) => {
     setSearchText(event.target.value);
 };
+
 const handleSearch = () => {
 
     const foundData = allData.filter((data) => data.name.toLowerCase().includes(searchText.toLowerCase()));
@@ -63,8 +73,17 @@ const handleSearch = () => {
 };
 
 const plus = (stock) => {
-    setPlusData(prevData => [...prevData, stock]);
+  if (stock) {
+    setPlusData(prevData => {
+      if (prevData.includes(stock)) {
+        return prevData.filter(item => item !== stock);
+      } else {
+        return [...prevData, stock];
+      }
+    });
   }
+};
+
 
 const Minus = (stock) => {
     console.log("new Stock : ", stock);
@@ -85,12 +104,6 @@ const Prev = () =>{
     setPageNum(prev => prev - 1);
 }
  
-  useEffect(() => {
-
-    fetch('http://localhost:4000/api/quizClass/all')
-      .then(response => response.json())
-      .catch(error => console.error('데이터 가져오기 실패:', error));
-  }, []);
 
   return (
     <div className="content-container">
@@ -117,8 +130,9 @@ const Prev = () =>{
                                 <span className="rank">{stock.rank}</span>
                                 <span className="name">{stock.name}</span>
                                 <span className="price-change">
+                                <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
+                                <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
                                 <span className="change" style={{ color: stock.color }}>{stock.change}</span>
-                                <span className="price">{stock.price}</span>
                                 </span>
                             </div>
                             ))
@@ -128,8 +142,9 @@ const Prev = () =>{
                                 <span className="rank">{stock.rank}</span>
                                 <span className="name">{stock.name}</span>
                                 <span className="price-change">
+                                <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
+                                <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
                                 <span className="change" style={{ color: stock.color }}>{stock.change}</span>
-                                <span className="price">{stock.price}</span>
                                 </span>
                             </div>
                             ))

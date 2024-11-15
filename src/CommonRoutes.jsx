@@ -8,18 +8,16 @@ import Passwordfind from "./password-find";
 import Quiz from "./Quiz/Quiz";
 import Test from "./Test/Test";
 import Protfolio from "./Protfolio";
+import Protfolio2 from "./Protfolio2";
 
 
 
 
 const CommonRoutes  = () => {
   let element = useRoutes([
-    { path: "/", element: <StartPage /> },
+    { path: "/", element: <MainPage /> },
 
-    {
-      path: "/main", 
-      element: <MainPage />,
-    },
+
 
     {
       path: "/portfolio",
@@ -28,7 +26,7 @@ const CommonRoutes  = () => {
 
     {
       path: "/ai",
-      element: <Join />,
+      element: <Protfolio2 />,
     }
 
     
