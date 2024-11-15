@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Pie, Bar, Line } from 'react-chartjs-2';
 import { 
   Chart as ChartJS, 
@@ -26,12 +26,50 @@ ChartJS.register(
   Title
 );
 
+
+
 const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
   const [selectedStock, setSelectedStock] = useState(null);
+  const [stockGData, setStockGData] = useState([]);
 
   const generateRandomPercentage = () => Math.floor(Math.random() * 100) + 1;
 
-  // 주식 데이터와 랜덤 비율을 한 번만 생성
+
+  useEffect(() => {
+    const fetchData = async (plusDataD) => {
+      console.log("plusDataD.ticker : ", plusDataD.ticker);
+      try {
+        const response = await fetch(`http://localhost:4000/api/stocks/${plusDataD.ticker+'.KS'}/history`);
+        const data = await response.json();
+  
+        if (data) {
+          setStockGData(prev => ({
+            ...prev,
+            [plusDataD.name]: {
+              name: plusDataD.name,
+              GData: data.quotes,
+            },
+          }));
+        }
+  
+  
+      } catch (error) {
+        console.error("데이터를 불러오는데 실패했습니다:", error);
+      }
+    };
+  
+    for (let i = 0; i < plusData.length; i++) {
+      fetchData(plusData[i]);
+
+    }
+  
+  }, [plusData]);
+  
+
+
+
+
+
   const dataWithRandomPercentages = useMemo(() => {
     return plusData.map(stock => ({
       ...stock,
@@ -127,21 +165,57 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
     },
   };
 
-  const generateStockPriceData = (stock) => ({
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-    datasets: [
-      {
-        label: `${stock.name} 주식 가격`,
-        data: Array.from({ length: 7 }, () => Math.floor(Math.random() * 100) + 100),
-        fill: false,
-        borderColor: '#4169E1',
-        backgroundColor: '#4169E1',
-        tension: 0.1,
-        pointRadius: 5,
-        pointHoverRadius: 7,
-      },
-    ],
-  });
+  const generateStockPriceData = (stock) => {
+    // stockGData에서 주식 데이터 가져오기
+    const stockData = stockGData[stock.name];  // stock.name이 'LG에너지솔루션'이면 stockGData['LG에너지솔루션']
+  
+    // stockData가 없으면 오류 처리
+    if (!stockData) {
+      console.error(`주식 데이터를 찾을 수 없습니다: ${stock.name}`);
+      return {
+        labels: [],
+        datasets: [],
+        startYear: null,
+        endYear: null,
+      };
+    }
+  
+    // stockData.GData에서 high 가격을 기준으로 날짜별 데이터 추출
+    const stockGraph = stockData.GData;
+  
+    // 날짜와 high 가격을 기반으로 월별 데이터 생성
+    const labels = stockGraph.map((data) => {
+      const date = new Date(data.date);
+      return `${date.getMonth() + 1}월`; // 월(1~12)을 기준으로 레이블 생성
+    });
+  
+    const prices = stockGraph.map((data) => data.high);  // 각 월의 'high' 가격을 데이터로 사용
+  
+    // 첫 번째 데이터와 마지막 데이터에서 연도 추출
+    const startYear = new Date(stockGraph[0].date).getFullYear();
+    const endYear = new Date(stockGraph[stockGraph.length - 1].date).getFullYear();
+  
+    console.log("stockGraph : ", stockGraph);
+  
+    return {
+      labels,  // 월별 레이블
+      datasets: [
+        {
+          label: `${stock.name} 주식 가격`,
+          data: prices,  // 'high' 가격 데이터
+          fill: false,
+          borderColor: '#4169E1',
+          backgroundColor: '#4169E1',
+          tension: 0.1,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+        },
+      ],
+      startYear,  // 시작 년도
+      endYear,    // 끝 년도
+    };
+  };
+  
 
   const lineChartOptions = {
     responsive: true,
@@ -188,6 +262,7 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
       const index = elements[0].index;
       const stockName = dataForBarChart.labels[index];
       const selected = dataWithRandomPercentages.find(stock => stock.name === stockName);
+      console.log('stockGData : ', stockGData);
       setSelectedStock(selected);
     } else {
       setSelectedStock(null);

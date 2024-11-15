@@ -1,0 +1,231 @@
+.chart-wrapper2 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  min-height: 900px;
+}
+
+.chart-container2 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 800px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 40px;
+}
+
+.chart-container2.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stock-price-chart2 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.prediction-info2 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 25px;
+  margin: 20px 0 30px 0;
+  background: linear-gradient(135deg, rgba(65, 105, 225, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(65, 105, 225, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.prediction-item2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prediction-item2:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(65, 105, 225, 0.2);
+  border: 1px solid rgba(65, 105, 225, 0.3);
+}
+
+.prediction-label2 {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95em;
+  margin-bottom: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.prediction-value2 {
+  color: white;
+  font-size: 1.6em;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
+}
+
+.ai-prediction2 {
+  color: #4169E1;
+  font-weight: 800;
+  position: relative;
+}
+
+.ai-prediction2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #4169E1, transparent);
+}
+
+.positive2 {
+  color: #00ff88;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.negative2 {
+  color: #ff4d4d;
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
+}
+
+.percentage2 {
+  font-size: 0.8em;
+  margin-left: 8px;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.chart-animate2 {
+  flex: 1;
+  min-height: 500px;
+  width: 100%;
+  position: relative;
+  margin-top: 30px;
+  padding-bottom: 40px;
+}
+
+.chart-animate2 canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-title2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2em;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
+}
+
+.chart-title2.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 로딩 애니메이션 */
+.loading-container2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 100%);
+  border-radius: 20px;
+  z-index: 10;
+  backdrop-filter: blur(15px);
+}
+
+.loading-spinner2 {
+  width: 100px;
+  height: 100px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #4169E1;
+  border-right: 4px solid #4169E1;
+  border-radius: 50%;
+  animation: spin2 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  box-shadow: 0 0 20px rgba(65, 105, 225, 0.3);
+}
+
+.loading-text2 {
+  color: white;
+  margin-top: 30px;
+  font-size: 1.4em;
+  font-weight: 500;
+  opacity: 0;
+  animation: fadeInOut2 2s ease infinite;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+}
+
+@keyframes spin2 {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInOut2 {
+  0% { opacity: 0.3; transform: translateY(5px); }
+  50% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0.3; transform: translateY(5px); }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .chart-wrapper2 {
+    min-height: 800px;
+  }
+
+  .chart-container2 {
+    min-height: 700px;
+  }
+
+  .chart-animate2 {
+    min-height: 400px;
+  }
+
+  .prediction-info2 {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .prediction-item2 {
+    width: 100%;
+  }
+  
+  .prediction-value2 {
+    font-size: 1.4em;
+  }
+  
+  .chart-title2 {
+    font-size: 1.5em;
+  }
+}

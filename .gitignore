@@ -7,11 +7,10 @@
 
 # testing
 /coverage
+/clean
 
 # production
 /build
-
-clean/
 
 # misc
 .DS_Store

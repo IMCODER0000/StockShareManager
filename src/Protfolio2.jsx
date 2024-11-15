@@ -15,31 +15,19 @@ function Protfolio2() {
   const [myCost, setMyCost] = useState(0);
   const [plusData, setPlusData] = useState([]);
   const [isFinish, setIsFinish] = useState(false);
+  const [stock, setStock] = useState(null);
 
-  useEffect(() => {
-    if (pageNum === 2) { // 로딩 페이지가 렌더링될 때
-      const timer = setTimeout(() => {
-        setLoading(false); // 3초 후에 로딩 종료
-      }, 3000);
-      return () => clearTimeout(timer); // 컴포넌트가 언마운트될 때 타이머를 클리어
-    }
-  }, [pageNum]); // pageNum이 2일 때 로딩 시작
-
-  // 로딩 상태가 끝난 후 바로 PortfolioResult로 이동
-  useEffect(() => {
-    if (!loading && pageNum === 2) {
-      setPageNum(3);  // 페이지 번호를 3으로 설정하여 PortfolioResult로 이동
-    }
-  }, [loading, pageNum]);
+ 
 
   return (
     <div>
       <div className="main-container">
         <Navigate />
         
-        {pageNum === 0 ? (
+     
           
           <PortfolioMainAi
+            setStock = {setStock}
             setPageNum={setPageNum} 
             riskLevel={riskLevel} 
             myCost={myCost} 
@@ -47,16 +35,8 @@ function Protfolio2() {
             plusData={plusData} 
             setIsFinish={setIsFinish} 
           />
-        ) : pageNum === 1 && loading ? ( 
-          <Loading />
-        ) : pageNum === 2 && !loading && isFinish ? (
-          <PortfolioResult2
-            myCost={myCost} 
-            riskLevel={riskLevel} 
-            plusData={plusData}
-            setPageNum={setPageNum}
-          /> 
-        ) : null}
+
+        
       </div>
     </div>
   );

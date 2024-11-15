@@ -9,6 +9,8 @@ import Quiz from "./Quiz/Quiz";
 import Test from "./Test/Test";
 import Protfolio from "./Protfolio";
 import Protfolio2 from "./Protfolio2";
+import PortfolioChart2 from "./PortfolioChart2";
+import PortfolioResult2 from "./PortfolioResult2";
 
 
 
@@ -27,6 +29,11 @@ const CommonRoutes  = () => {
     {
       path: "/ai",
       element: <Protfolio2 />,
+    },
+
+    {
+      path: "/ai/result",
+      element: <PortfolioResult2 />,
     }
 
     

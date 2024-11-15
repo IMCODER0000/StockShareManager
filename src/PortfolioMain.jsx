@@ -3,10 +3,11 @@ import "./Quiz/css/Quiz.css";
 import Navigate from "./Navigate";
 import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import "./Content.css"
 import "./PortfolioMain.css"
 
-function PortfolioMain({ setPageNum, myCost, riskLevel,setPlusData,plusData,setIsFinish }) {
+function PortfolioMain({ setPageNum, myCost, riskLevel,setPlusData,plusData,setIsFinish,setIm, im }) {
     const [searchText, setSearchText] = useState('');
     const [searchData, setSearchData] = useState([]);
     const [top10, setTop10] = useState([]);
@@ -33,12 +34,49 @@ function PortfolioMain({ setPageNum, myCost, riskLevel,setPlusData,plusData,setI
 
    
 
-  
-
-
-
-
 }, []);
+
+
+
+const handleSubmit = async () => {
+  const inputData = {
+    totalInvestment: myCost,
+    risk: riskLevel,
+    company1: plusData[0].name,
+    company2: plusData[1].name,
+    company3: plusData[2].name,
+  };
+
+  console.log("inputData : ", inputData);
+
+  try {
+    // POST 요청 보내기
+    const response = await axios.post("http://localhost:4000/api/runPython", inputData, {
+      headers: {
+        'Content-Type': 'application/json',  // 명시적으로 Content-Type 설정
+      },
+    });
+
+    const data = response.data;
+
+    console.log("data123 : ", data);
+
+   
+
+    // 예: 상태 설정
+    setIm({
+      data,
+    });
+
+    console.log("setIm : ", im);
+
+    console.log("Response : ", response.data);
+  } catch (err) {
+    console.error("Error : ", err);
+  }
+};
+
+
 
 const fetchTop10Stocks = async () => {
     try {
@@ -97,6 +135,7 @@ const Next = () =>{
     console.log("자산 : ", myCost);
     console.log("리스크 : ", riskLevel);
     console.log("주식들 : ", plusData);
+    handleSubmit();
 
 }
 

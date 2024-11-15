@@ -4,8 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 function Navigate() {
     const navigate = useNavigate();
-    const location = useLocation();  
-    const [selectedMenu, setSelectedMenu] = useState(null);
+
 
 
     
@@ -18,10 +17,6 @@ function Navigate() {
         navigate('/');
     };
 
-    const handleMenuClick = (menu, path) => {
-        setSelectedMenu(menu);
-        navigate(path);
-    };
 
     return (
         <div>

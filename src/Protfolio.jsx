@@ -9,10 +9,11 @@ import PortfolioResult from "./PortfolioResult";
 function Protfolio() {
   const [pageNum, setPageNum] = useState(0);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
-  const [riskLevel, setRiskLevel] = useState(''); 
+  const [riskLevel, setRiskLevel] = useState(0); 
   const [myCost, setMyCost] = useState(0);
   const [plusData, setPlusData] = useState([]);
   const [isFinish, setIsFinish] = useState(false);
+  const [im,setIm] = useState({});
 
   useEffect(() => {
     if (pageNum === 2) { // 로딩 페이지가 렌더링될 때
@@ -45,9 +46,14 @@ function Protfolio() {
             setPlusData={setPlusData} 
             plusData={plusData} 
             setIsFinish={setIsFinish} 
+            setIm={setIm}
+            im={im}
           />
         ) : pageNum === 2 && loading ? ( 
-          <Loading />
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>효율적인 자산 분배중 입니다.</p>
+          </div>
         ) : pageNum === 3 && !loading && isFinish ? (
           <PortfolioResult 
             myCost={myCost} 

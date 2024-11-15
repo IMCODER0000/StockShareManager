@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import "./Content.css"
 import "./PortfolioMain.css"
 
-function PortfolioMainAi({ setPageNum, myCost, riskLevel,setPlusData,plusData,setIsFinish }) {
+function PortfolioMainAi({ setPageNum, myCost, riskLevel,setPlusData,plusData,setIsFinish, setStock }) {
+
     const [searchText, setSearchText] = useState('');
     const [searchData, setSearchData] = useState([]);
     const [top10, setTop10] = useState([]);
@@ -74,6 +75,8 @@ const handleSearch = () => {
 };
 
 const plus = (stock) => {
+  console.log("new Stock : ", stock);  // stock 데이터 확인
+
   Swal.fire({
     title: '주식을 선택 하시겠습니까?',
     icon: 'question',
@@ -82,37 +85,17 @@ const plus = (stock) => {
     showCancelButton: true,  // 취소 버튼을 표시
   }).then((result) => {
     if (result.isConfirmed) {
-      // 확인 버튼 클릭 시 실행할 코드
-      console.log('확인 클릭');
+      console.log("new Stock2 : ", stock);
+      navigate('/ai/result', { state: { stock } });  // 주식 데이터를 전달
     } else if (result.isDismissed) {
-      // 취소 버튼 클릭 시 실행할 코드
       console.log('취소 클릭');
     }
   });
-  
-  
 };
 
 
-const Minus = (stock) => {
-    console.log("new Stock : ", stock);
-    setPlusData(prevData => prevData.filter(item => item.name !== stock.name));
-    console.log("@@@@@@ : ", plusData);
-}
-  
-const Next = () =>{
-    setPageNum(prev => prev + 1);
-    setIsFinish(true);
-    console.log("자산 : ", myCost);
-    console.log("리스크 : ", riskLevel);
-    console.log("주식들 : ", plusData);
 
-}
 
-const Prev = () =>{
-    setPageNum(prev => prev - 1);
-}
- 
 
   return (
     <div className="content-container">
@@ -161,11 +144,7 @@ const Prev = () =>{
                         </div>
 
                 </div>
-                 <div className="p-right">
-                    
-                  
-                    
-                </div>
+            
                     
                 </div>
             
