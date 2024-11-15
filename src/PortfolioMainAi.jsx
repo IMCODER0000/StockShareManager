@@ -3,10 +3,11 @@ import "./Quiz/css/Quiz.css";
 import Navigate from "./Navigate";
 import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import "./Content.css"
 import "./PortfolioMain.css"
 
-function PortfolioMain({ setPageNum, myCost, riskLevel,setPlusData,plusData,setIsFinish }) {
+function PortfolioMainAi({ setPageNum, myCost, riskLevel,setPlusData,plusData,setIsFinish }) {
     const [searchText, setSearchText] = useState('');
     const [searchData, setSearchData] = useState([]);
     const [top10, setTop10] = useState([]);
@@ -73,15 +74,23 @@ const handleSearch = () => {
 };
 
 const plus = (stock) => {
-  if (stock) {
-    setPlusData(prevData => {
-      if (prevData.includes(stock)) {
-        return prevData.filter(item => item !== stock);
-      } else {
-        return [...prevData, stock];
-      }
-    });
-  }
+  Swal.fire({
+    title: '주식을 선택 하시겠습니까?',
+    icon: 'question',
+    confirmButtonText: '확인',
+    cancelButtonText: '취소',
+    showCancelButton: true,  // 취소 버튼을 표시
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // 확인 버튼 클릭 시 실행할 코드
+      console.log('확인 클릭');
+    } else if (result.isDismissed) {
+      // 취소 버튼 클릭 시 실행할 코드
+      console.log('취소 클릭');
+    }
+  });
+  
+  
 };
 
 
@@ -153,20 +162,8 @@ const Prev = () =>{
 
                 </div>
                  <div className="p-right">
-                    <div className="p-selected">
-                        {plusData.map(stock => (
-                            <div className="p-selected-content" onClick={() => Minus(stock)}>
-                                {stock.name}
-                                <span> X </span>
-                            </div>
-
-                        ))}
                     
-                    </div>
-                    <div className="submit-box">
-                        <button className="submit" onClick={Prev}> 이전 </button>
-                        <button className="submit" onClick={Next}> 다음 </button>
-                    </div>
+                  
                     
                 </div>
                     
@@ -178,5 +175,5 @@ const Prev = () =>{
   );
 }
 
-export default PortfolioMain;
+export default PortfolioMainAi;
 

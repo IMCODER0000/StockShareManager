@@ -3,7 +3,7 @@ import "./Quiz/css/Quiz.css";
 import PortfolioChart from "./PortfolioChart";
 import "./PortfolioResult.css";
 
-function PortfolioResult({ myCost, riskLevel, plusData }) {
+function PortfolioResult2({ myCost, riskLevel, plusData }) {
 
     return (
         <div className="content-container2">
@@ -16,4 +16,4 @@ function PortfolioResult({ myCost, riskLevel, plusData }) {
     );
 }
 
-export default PortfolioResult;
+export default PortfolioResult2;

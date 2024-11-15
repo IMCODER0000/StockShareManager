@@ -26,7 +26,7 @@ ChartJS.register(
   Title
 );
 
-const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
+const PortfolioChart2 = ({ myCost, riskLevel, plusData }) => {
   const [selectedStock, setSelectedStock] = useState(null);
 
   const generateRandomPercentage = () => Math.floor(Math.random() * 100) + 1;
@@ -197,75 +197,15 @@ const PortfolioChart = ({ myCost, riskLevel, plusData }) => {
   return (
     <div className="chart-wrapper">
       <div className="chart-container">
-        <div className="pie-chart">
-          <h3 className="chart-title">자산 비율</h3>
-          <Pie data={dataForPieChart} options={optionsForPieChart} />
-        </div>
-        <div className="bar-chart">
-          <h3 className="chart-title">선택된 주식 비율</h3>
-          <Bar 
-            data={dataForBarChart} 
-            options={{
-              ...optionsForBarChart,
-              onClick: handleBarClick
-            }} 
-          />
-        </div>
-        <div className="tables">
-          <div className="investment-ratio-table">
-            <h3 className="chart-title">자산 비율 표</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>자산 종류</th>
-                  <th>비율</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>주식</td>
-                  <td>70%</td>
-                </tr>
-                <tr>
-                  <td>채권</td>
-                  <td>30%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="stock-table">
-            <h3 className="chart-title">주식 비율</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>주식명</th>
-                  <th>금액</th>
-                  <th>비율</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dataWithRandomPercentages.map((stock, index) => (
-                  <tr key={index}>
-                    <td>{stock.name}</td>
-                    <td>{stock.price}%</td>
-                    <td>{stock.percentage}%</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {selectedStock && (
+       
         <div className="stock-price-chart">
           <h3 className="chart-title">{selectedStock.name} 주가 그래프</h3>
           <Line data={generateStockPriceData(selectedStock)} options={lineChartOptions} />
         </div>
-      )}
+
+      </div>
     </div>
   );
 };
 
-export default PortfolioChart;
+export default PortfolioChart2;

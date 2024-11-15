@@ -18,21 +18,9 @@ function Content() {
   };
 
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
 
  
-  useEffect(() => {
 
-    fetch('http://localhost:4000/api/quizClass/all')
-      .then(response => response.json())
-      .then(data => setQuizData(data))  
-      .catch(error => console.error('데이터 가져오기 실패:', error));
-  }, []);
 
   return (
     <div className="content-container">
