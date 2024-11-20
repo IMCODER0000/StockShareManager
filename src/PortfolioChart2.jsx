@@ -27,20 +27,18 @@ ChartJS.register(
   Title
 );
 
-const PortfolioChart2 = ({ ticker, name }) => {
+const PortfolioChart2 = ({ stock, aiData }) => {
 
-  console.log("Received props:", { ticker, name });
+ const {ticker, name} = stock;
 
   const [stockGData, setStockGData] = useState([]);
-  const [stockEx, setStockEx] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+
+  console.log("################ : ", aiData);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
       if (!ticker) {
         console.error("No ticker provided");
-        setIsLoading(false);
         return;
       }
       
@@ -57,22 +55,14 @@ const PortfolioChart2 = ({ ticker, name }) => {
               GData: data.quotes,
             },
           }));
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 3000);
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
-        setIsLoading(false);
       }
     };
 
     fetchData();
-    setStockEx(58900);
   }, [ticker, name]);
-
-
-
 
   const generateStockPriceData = (name) => {
     const stockData = stockGData[name];
@@ -104,17 +94,20 @@ const PortfolioChart2 = ({ ticker, name }) => {
     const historicalPrices = stockGraph.map((data) => data.high);
     const lastPrice = historicalPrices[historicalPrices.length - 1];
 
+    // AI 예측 가격 사용 (소수점 제거)
+    const predictedPrice = aiData ? Math.floor(aiData.price) : lastPrice;
+
     // 실제 데이터와 예측 데이터 분리
     const realData = [...historicalPrices];
     const predictionData = Array(historicalPrices.length - 1).fill(null);
-    predictionData.push(lastPrice, stockEx); // 마지막 실제 데이터와 예측값 연결
+    predictionData.push(lastPrice, predictedPrice);
 
     console.log("Data check:", {
       labels,
       realData,
       predictionData,
       lastPrice,
-      stockEx
+      predictedPrice
     });
 
     return {
@@ -217,18 +210,62 @@ const PortfolioChart2 = ({ ticker, name }) => {
 
   return (
     <div className="chart-wrapper">
-      <div className="chart-container">
-        {isLoading ? (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-            <p>AI 주가 예측 중입니다.</p>
+      <div className="chart-container2">
+        <div className="stock-price-chart2">
+          <h3 className="chart-title">{name} 주가 그래프</h3>
+          
+          <div className="stock-info-container">
+            <div className="stock-info-box">
+              <div className="stock-info-label">현재 주가</div>
+              <div className="stock-info-value">
+                {stockGData[name]?.GData ? 
+                  `${Number(stockGData[name].GData[stockGData[name].GData.length - 1].high).toLocaleString()}원` 
+                  : '-'}
+              </div>
+            </div>
+
+            <div className="stock-info-box">
+              <div className="stock-info-label">예측 주가</div>
+              <div className="stock-info-value">
+              {aiData?.price ? `${parseInt(aiData.price).toLocaleString()}원` : '-'}
+              </div>
+              {aiData?.price && stockGData[name]?.GData && (
+                <div className={`stock-info-change ${
+                  (aiData.price - stockGData[name].GData[stockGData[name].GData.length - 1].high) > 0 
+                  ? 'positive' 
+                  : 'negative'
+                }`}>
+                  {((aiData.price - stockGData[name].GData[stockGData[name].GData.length - 1].high) / 
+                    stockGData[name].GData[stockGData[name].GData.length - 1].high * 100).toFixed(2)}%
+                </div>
+              )}
+            </div>
+
+            <div className="stock-info-box">
+              <div className="stock-info-label">등락률 (전일대비)</div>
+              {stockGData[name]?.GData && stockGData[name].GData.length >= 2 && (
+                <>
+                  <div className="stock-info-value">
+                    {((stockGData[name].GData[stockGData[name].GData.length - 1].high - 
+                      stockGData[name].GData[stockGData[name].GData.length - 2].high) / 
+                      stockGData[name].GData[stockGData[name].GData.length - 2].high * 100).toFixed(2)}%
+                  </div>
+                  <div className={`stock-info-change ${
+                    (stockGData[name].GData[stockGData[name].GData.length - 1].high - 
+                    stockGData[name].GData[stockGData[name].GData.length - 2].high) > 0 
+                    ? 'positive' 
+                    : 'negative'
+                  }`}>
+                    {Number(stockGData[name].GData[stockGData[name].GData.length - 1].high - 
+                      stockGData[name].GData[stockGData[name].GData.length - 2].high).toLocaleString()}원
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        ) : (
-          <div className="stock-price-chart">
-            <h3 className="chart-title">{name} 주가 그래프</h3>
-            <Line data={generateStockPriceData(name)} options={lineChartOptions} />
-          </div>
-        )}
+
+          <Line data={generateStockPriceData(name)} options={lineChartOptions} />
+        </div>
       </div>
     </div>
   );

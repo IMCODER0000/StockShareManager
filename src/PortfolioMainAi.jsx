@@ -13,6 +13,7 @@ function PortfolioMainAi({ setPageNum, myCost, riskLevel,setPlusData,plusData,se
     const [searchData, setSearchData] = useState([]);
     const [top10, setTop10] = useState([]);
     const [allData, setAllData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -74,21 +75,46 @@ const handleSearch = () => {
 
 };
 
-const plus = (stock) => {
-  console.log("new Stock : ", stock);  // stock 데이터 확인
+const plus = async (stock) => {
+  console.log("new Stock : ", stock);
 
   Swal.fire({
     title: '주식을 선택 하시겠습니까?',
     icon: 'question',
     confirmButtonText: '확인',
     cancelButtonText: '취소',
-    showCancelButton: true,  // 취소 버튼을 표시
-  }).then((result) => {
+    showCancelButton: true,
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      console.log("new Stock2 : ", stock);
-      navigate('/ai/result', { state: { stock } });  // 주식 데이터를 전달
-    } else if (result.isDismissed) {
-      console.log('취소 클릭');
+      try {
+        setIsLoading(true);
+        const response = await fetch(`http://localhost:4000/api/ai/${stock.name}`);
+        const aiData = await response.json();
+
+        console.log("AI Data : ", aiData);
+
+        if (aiData) {
+          // aiData에서 price 값 추출
+          const { price } = aiData;
+          console.log("Received Price5555555555: ", price);
+
+          navigate('/ai/result', {
+            state: {
+              stock,
+              aiData
+            }
+          });
+        }
+      } catch (error) {
+        console.error("AI 데이터를 불러오는데 실패했습니다:", error);
+        Swal.fire({
+          title: '오류',
+          text: 'AI 분석 중 오류가 발생했습니다.',
+          icon: 'error',
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
   });
 };
@@ -97,62 +123,70 @@ const plus = (stock) => {
 
 
 
+
+
   return (
-    <div className="content-container">
-        <div className="portfolio-main-box">
+    <div>
+      {isLoading ? (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>AI 주가 예측 중입니다.</p>
+        </div>
+      ) : (
+        <div className="content-container">
+          <div className="portfolio-main-box">
             <div className="nom"></div>
             <div className="p-total-content">
-            <div className="p-left">
+              <div className="p-left">
                 <div className="Main-Search">
-                        <input
-                            type="text"
-                            className="search-input"
-                            value={searchText}
-                            onChange={handleChange}
-                            placeholder="검색어를 입력하세요..."
-                        />
-                        <button className="search-button" onClick={handleSearch}>
-                            <FaSearch />
-                        </button>
-                    </div>
-                    <div className="stock-list">
-                        {searchData.length === 0 ? (
-                            top10.map(stock => (
-                            <div key={stock.rank} className="stock-item" onClick={() => plus(stock) }>
-                                <span className="rank">{stock.rank}</span>
-                                <span className="name">{stock.name}</span>
-                                <span className="price-change">
-                                <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
-                                <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
-                                <span className="change" style={{ color: stock.color }}>{stock.change}</span>
-                                </span>
-                            </div>
-                            ))
-                        ) : (
-                            searchData.map(stock => (
-                            <div key={stock.rank} className="stock-item" onClick={() => plus(stock) }>
-                                <span className="rank">{stock.rank}</span>
-                                <span className="name">{stock.name}</span>
-                                <span className="price-change">
-                                <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
-                                <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
-                                <span className="change" style={{ color: stock.color }}>{stock.change}</span>
-                                </span>
-                            </div>
-                            ))
-                        )}
-                        </div>
-
+                  <input
+                    type="text"
+                    className="search-input"
+                    value={searchText}
+                    onChange={handleChange}
+                    placeholder="검색어를 입력하세요..."
+                  />
+                  <button className="search-button" onClick={handleSearch}>
+                    <FaSearch />
+                  </button>
                 </div>
-            
-                    
+                <div className="stock-list">
+                  {searchData.length === 0 ? (
+                    top10.map(stock => (
+                      <div key={stock.rank} className="stock-item" onClick={() => plus(stock)}>
+                        <span className="rank">{stock.rank}</span>
+                        <span className="name">{stock.name}</span>
+                        <span className="price-change">
+                          <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
+                          <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
+                          <span className="change" style={{ color: stock.color }}>{stock.change}</span>
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    searchData.map(stock => (
+                      <div key={stock.rank} className="stock-item" onClick={() => plus(stock)}>
+                        <span className="rank">{stock.rank}</span>
+                        <span className="name">{stock.name}</span>
+                        <span className="price-change">
+                          <span className="marketCap">{stock.marketCap}<span className="marketCapText">&nbsp;(억원)</span></span>
+                          <span className="price">{stock.price}<span className="priceText">&nbsp;(원)</span></span>
+                          <span className="change" style={{ color: stock.color }}>{stock.change}</span>
+                        </span>
+                      </div>
+                    ))
+                  )}
                 </div>
-            
 
+              </div>
+
+            </div>
+
+          </div>
         </div>
+      )}
     </div>
   );
 }
 
 export default PortfolioMainAi;
-

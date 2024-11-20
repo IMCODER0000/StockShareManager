@@ -22,8 +22,10 @@ function PortfolioResult2() {
         return null;
     }
 
-    const { stock } = location.state;
-    console.log("Rendering PortfolioResult2 with stock:", stock);
+    const { stock, aiData } = location.state;
+
+
+    console.log("QQQQQQ : ", aiData);
 
     return (
         <div>
@@ -31,7 +33,8 @@ function PortfolioResult2() {
                 <Navigate />
                 <div className="content-container2">
                     <div className="portfolio-main-box2">
-                        <PortfolioChart2 {...stock} />
+                    <PortfolioChart2 stock={stock} aiData={aiData} />
+
                     </div>
                 </div>
             </div>
